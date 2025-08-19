@@ -20,27 +20,31 @@ const nextConfig = {
     ],
     ...(isGithubPages ? { unoptimized: true } : {}),
   },
-  async redirects() {
-    return [
-      {
-        source: '/batalha',
-        destination: '/batalha/',
-        permanent: false,
-      },
-    ]
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/batalha/',
-        destination: '/batalha/index.html',
-      },
-    ]
-  },
+  ...(isGithubPages
+    ? {}
+    : {
+        async redirects() {
+          return [
+            {
+              source: '/batalha',
+              destination: '/batalha/',
+              permanent: false,
+            },
+          ]
+        },
+        async rewrites() {
+          return [
+            {
+              source: '/batalha/',
+              destination: '/batalha/index.html',
+            },
+          ]
+        },
+      }),
+  output: 'export',
 }
 
 if (isGithubPages) {
-  nextConfig.output = 'export'
   nextConfig.basePath = `/${repoName}`
   nextConfig.assetPrefix = `/${repoName}`
   nextConfig.trailingSlash = true
