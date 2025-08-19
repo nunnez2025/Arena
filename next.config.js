@@ -1,5 +1,5 @@
 const isGithubPages = process.env.GITHUB_PAGES === 'true'
-const repoName = 'Arena'
+const repoName = process.env.REPO_NAME || 'Arena'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -348,13 +349,18 @@ export default function Home() {
             <TabsContent value="battle">
               <Card className="bg-gradient-to-br from-red-900/30 to-black/50 border-red-900/30 p-8">
                 <h3 className="text-2xl font-bold mb-6">Confronto nas Sombras</h3>
-                <div className="w-full mb-8 rounded-lg overflow-hidden border border-red-900/30 bg-black/60">
+                <div className="w-full mb-4 rounded-lg overflow-hidden border border-red-900/30 bg-black/60">
                   <iframe
                     src="/batalha/index.html"
                     title="Arena das Sombras - Batalha"
                     className="w-full"
                     style={{ height: "720px" }}
                   />
+                </div>
+                <div className="mb-8">
+                  <Link href="/batalha/" className="inline-block">
+                    <Button className="bg-red-600 hover:bg-red-700">Abrir Batalha em Tela Cheia</Button>
+                  </Link>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-4">
