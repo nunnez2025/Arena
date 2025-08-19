@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Darkcoin — Arena Cyberpunk 2025</title>
+<meta name="description" content="O melhor jogo de arena cyberpunk de 2025. Combate tático com cartas, totens-IA, economia Darkcoin, estética cyber-ocultista.">
+<style>
+  :root{
+    --bg:#0a0b10; --panel:#0e111a; --bord:#1b2442; --ink:#e7ebf5; --mut:#97a1b6;
+    --neon:#00f5ff; --rose:#e43f5a; --vio:#7c3aed; --gold:#f4c542; --emer:#10b981;
+    --hp:#ef4444; --mp:#38bdf8; --cyber:#00ff88;
+    --r:16px; --sh:0 12px 40px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--ink); background:
+    radial-gradient(1000px 700px at 70% -30%, rgba(124,58,237,.13), transparent 60%),
+    radial-gradient(800px 600px at 0% 0%, rgba(6,182,212,.10), transparent 65%),
+    linear-gradient(180deg, #090b12 0%, #0a0b10 100%);
+    font:500 15px/1.5 Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    overflow-x:hidden;
+  }
+  a{color:var(--neon); text-decoration:none}
+  .wrap{max-width:1400px; margin:18px auto; padding:14px}
+  header{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:12px 14px; border:1px solid var(--bord); border-radius:16px; background:linear-gradient(180deg,#0d1120,#0a0d18);
+    box-shadow:var(--sh); position:sticky; top:8px; z-index:20; backdrop-filter: blur(8px);
+  }
+  .brand{display:flex; gap:10px; align-items:center}
+  .gem{
+    width:40px; height:40px; border-radius:12px;
+    background:conic-gradient(from 200deg,#7c3aed,#06b6d4,#e43f5a,#7c3aed);
+    box-shadow: inset 0 0 30px rgba(0,0,0,.5);
+  }
+  .title h1{margin:0; font-size:18px; letter-spacing:.2px}
+  .title small{display:block; color:var(--mut)}
+  .hud{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+  .pill{padding:8px 12px; border:1px solid var(--bord); background:#0b0f1b; border-radius:999px; display:flex; gap:8px; align-items:center; font-weight:800}
+  .dc{color:var(--gold)}
+  button{
+    padding:10px 14px; border-radius:12px; border:1px solid var(--bord); background:#0c1120; color:var(--ink); font-weight:800; cursor:pointer; box-shadow:0 8px 20px rgba(0,0,0,.28);
+    transition:.18s ease; user-select:none;
+  }
+  button:hover{transform:translateY(-1px)} button:active{transform:translateY(0)}
+  .primary{background:linear-gradient(180deg,#0dd3ff33,#7c3aed33)}
+  .danger{background:linear-gradient(180deg,#220b10,#160b14); color:#ffb5c1}
+  .ok{background:linear-gradient(180deg,#0c1e18,#0a1712); color:#caffed}
+  .cyber{background:linear-gradient(180deg,#00ff8833,#00f5ff33); color:var(--cyber)}
+  main{display:grid; grid-template-columns:1.5fr .9fr; gap:14px; margin-top:14px}
+  @media (max-width:980px){main{grid-template-columns:1fr}}
+  .panel{border:1px solid var(--bord); border-radius:16px; background:linear-gradient(180deg,#0c1020,#0a0d18); box-shadow:var(--sh)}
+  .hd{padding:12px 14px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #151a2e}
+  .bd{padding:12px}
+  
+  /* ======= CINEMÁTICA ======= */
+  .scene{
+    position:relative; border-radius:16px; overflow:hidden; border:1px solid #1a2344;
+    min-height:420px; background:#080b12;
+  }
+  .scene .layer{position:absolute; inset:0; background-position:center; background-size:cover; opacity:.9}
+  .moon{position:absolute; width:240px; height:240px; border-radius:50%; right:50%; top: -40px;
+    background:radial-gradient(circle at 40% 45%, #ffb4b4 0%, #e43f5a 35%, #6a1426 70%, #0000 72%),
+               radial-gradient(circle at 50% 50%, rgba(255,255,255,.12), transparent 60%);
+    box-shadow:0 0 80px rgba(228,63,90,.45), inset 0 0 40px rgba(255,255,255,.08);
+    filter:saturate(120%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+  canvas#battle{display:block; width:100%; height:420px}
+  .turnBanner{position:absolute; top:14px; left:50%; transform:translateX(-50%); font:900 18px/1 "Cinzel",serif; letter-spacing:.2em; color:#e9dcc9}
+  
+  /* ======= CARTAS ======= */
+  .card{
+    width:120px; height:180px; border:2px solid var(--bord); border-radius:12px; background:linear-gradient(135deg,#0d1322,#0a0f1c);
+    position:relative; cursor:pointer; transition:.2s ease; box-shadow:0 4px 20px rgba(0,0,0,.3);
+    display:flex; flex-direction:column; padding:8px;
+  }
+  .card:hover{transform:translateY(-4px); box-shadow:0 8px 30px rgba(0,0,0,.4);}
+  .card.played{opacity:.6; transform:scale(.9);}
+  .card.legendary{border-color:var(--gold); box-shadow:0 0 20px rgba(244,197,66,.3);}
+  .card.rare{border-color:var(--vio); box-shadow:0 0 15px rgba(124,58,237,.3);}
+  .card.common{border-color:var(--neon);}
+  .cardName{font-weight:800; font-size:12px; margin-bottom:4px; text-align:center;}
+  .cardCost{position:absolute; top:4px; right:4px; width:20px; height:20px; border-radius:50%; background:var(--gold); color:#000; font-weight:800; font-size:10px; display:flex; align-items:center; justify-content:center;}
+  .cardDesc{font-size:10px; color:var(--mut); flex:1; display:flex; align-items:center; text-align:center;}
+  .cardType{font-size:9px; color:var(--neon); text-align:center; margin-top:4px;}
+  
+  .hand{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:10px 0;}
+  .deck{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;}
+  
+  /* ======= HUD BATALHA ======= */
+  .hudRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+  .frame{border:1px solid var(--bord); border-radius:14px; padding:10px; background:#0b0f1c; flex:1; min-width:230px}
+  .bar{height:12px; border-radius:999px; overflow:hidden; background:#0d1326; border:1px solid #172245}
+  .hp{background:linear-gradient(90deg,var(--hp),#b91c1c)}
+  .mp{background:linear-gradient(90deg,var(--mp),#0284c7)}
+  .uiRow{display:flex; gap:8px; flex-wrap:wrap}
+  .skill{flex:1; min-width:140px}
+  .skill b{display:block; margin-bottom:4px}
+  .kbd{border:1px solid #2a3258; border-radius:6px; padding:2px 6px; font-size:12px; background:#0c1234}
+  .log{height:260px; overflow:auto; padding:8px; background:#0a0e1a; border:1px solid #1a2344; border-radius:10px; font-family:ui-monospace,Menlo,Consolas,monospace}
+  .chip{padding:4px 8px; border:1px solid #25305a; border-radius:999px; font-weight:800; font-size:12px; background:#0e1430}
+  
+  /* ======= TABS ======= */
+  .tabs{display:flex; gap:8px; flex-wrap:wrap}
+  .tab{padding:8px 10px; border:1px solid var(--bord); border-radius:10px; background:#0c1120; cursor:pointer}
+  .tab.active{outline:2px solid #7c3aed80}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  @media (max-width:640px){.grid2{grid-template-columns:1fr}}
+  
+  /* ======= MASCOTE ======= */
+  .mascot{
+    position:fixed; right:10px; bottom:16px; width:280px; z-index:50;
+    border:1px solid var(--bord); border-radius:14px; padding:10px 12px;
+    background:radial-gradient(180px 120px at 60% 0%, rgba(124,58,237,.25), transparent 60%), linear-gradient(180deg,#0b0f1c,#0a0d18);
+    box-shadow:0 12px 50px rgba(124,58,237,.14), inset 0 0 40px rgba(6,182,212,.10);
+  }
+  .face{width:42px; height:42px; border-radius:12px; background:
+    radial-gradient(10px 10px at 35% 40%, #fff, #fff0),
+    radial-gradient(10px 10px at 65% 40%, #fff, #fff0),
+    radial-gradient(20px 14px at 50% 70%, #0ff, #0000),
+    conic-gradient(from 180deg, #0ff,#7c3aed,#e43f5a,#0ff)}
+  .row{display:flex; gap:8px; flex-wrap:wrap}
+  .mut{color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="gem" aria-hidden="true"></div>
+      <div class="title">
+        <h1>Darkcoin — <span style="text-shadow:0 0 14px rgba(0,255,255,.3)">Arena Cyberpunk 2025</span></h1>
+        <small class="mut">Build Único • Arena x Turnos • Cartas • Totens • Economia</small>
+      </div>
+    </div>
+    <div class="hud">
+      <div class="pill">Carteira: <span class="dc mono" id="dc">100</span> DC</div>
+      <div class="pill">Nível: <b id="lvl">1</b></div>
+      <button id="save" class="primary">Salvar</button>
+      <button id="export">Exportar</button>
+      <button id="import">Importar</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ESQUERDA: CENA + CONTROLES -->
+    <section class="panel">
+      <div class="hd">
+        <div class="tabs">
+          <div class="tab active" data-tab="turnos">Combate em Turnos</div>
+          <div class="tab" data-tab="cartas">Arena de Cartas</div>
+          <div class="tab" data-tab="arena">Arena Automática</div>
+          <div class="tab" data-tab="totens">Totens</div>
+          <div class="tab" data-tab="mercado">Mercado</div>
+          <div class="tab" data-tab="lore">Lore</div>
+        </div>
+        <div class="chip">Seed: <span id="seed"></span></div>
+      </div>
+      <div class="bd">
+        <!-- ====== TAB TURNOS ====== -->
+        <div data-view="turnos">
+          <div class="scene">
+            <div class="layer" id="sceneBg"></div>
+            <div class="moon" aria-hidden="true"></div>
+            <canvas id="battle" width="1280" height="560"></canvas>
+            <div class="turnBanner" id="turnBanner">Turno do Jogador</div>
+          </div>
+
+          <div class="hudRow">
+            <div class="frame">
+              <b>Jogador</b>
+              <div class="bar"><div id="php" class="hp" style="width:100%"></div></div>
+              <div class="bar" style="margin-top:6px"><div id="pmp" class="mp" style="width:100%"></div></div>
+              <div class="mut" id="pstats"></div>
+            </div>
+            <div class="frame">
+              <b>Inimigo</b>
+              <div class="bar"><div id="ehp" class="hp" style="width:100%"></div></div>
+              <div class="bar" style="margin-top:6px"><div id="emp" class="mp" style="width:100%"></div></div>
+              <div class="mut" id="estats"></div>
+            </div>
+            <div class="frame">
+              <b>Ações</b>
+              <div class="uiRow">
+                <div class="skill">
+                  <b>Curse <span class="kbd">Q</span></b>
+                  <button class="primary" id="skCurse">Lançar Maldição</button>
+                  <small class="mut">Dano + Vulnerável (2t)</small>
+                </div>
+                <div class="skill">
+                  <b>Sacrifice <span class="kbd">W</span></b>
+                  <button class="danger" id="skSac">Sacrificar</button>
+                  <small class="mut">Gasta 10% HP → +ATK e +DC</small>
+                </div>
+                <div class="skill">
+                  <b>Ward <span class="kbd">E</span></b>
+                  <button class="ok" id="skWard">Proteção</button>
+                  <small class="mut">Barreira + Cura leve</small>
+                </div>
+                <div class="skill">
+                  <b>End Turn <span class="kbd">R</span></b>
+                  <button id="endTurn">Encerrar Turno</button>
+                  <small class="mut">Passa a vez para a Sombra</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="frame" style="margin-top:10px">
+            <b>Registro</b>
+            <div id="tlog" class="log"></div>
+          </div>
+        </div>
+
+        <!-- ====== TAB CARTAS ====== -->
+        <div data-view="cartas" hidden>
+          <div class="scene">
+            <canvas id="cardArena" width="1024" height="420" style="width:100%;border-radius:14px;border:1px solid #1a2344;background:linear-gradient(180deg,#0b0f1b,#0a0d18)"></canvas>
+            <div class="turnBanner" id="cardTurnBanner">Seu Turno</div>
+          </div>
+          
+          <div class="hudRow">
+            <div class="frame">
+              <b>Mão do Jogador</b>
+              <div id="playerHand" class="hand"></div>
+              <div class="mut">Energia: <span id="playerEnergy">3</span>/3</div>
+            </div>
+            <div class="frame">
+              <b>Mão do Inimigo</b>
+              <div id="enemyHand" class="hand"></div>
+              <div class="mut">Energia: <span id="enemyEnergy">3</span>/3</div>
+            </div>
+          </div>
+          
+          <div class="frame" style="margin-top:10px">
+            <b>Deck do Jogador</b>
+            <div id="playerDeck" class="deck"></div>
+            <div class="row" style="margin-top:8px">
+              <button id="drawCard" class="cyber">Comprar Carta</button>
+              <button id="endCardTurn" class="primary">Encerrar Turno</button>
+              <span class="chip">Cartas: <b id="deckCount">20</b></span>
+            </div>
+          </div>
+          
+          <div class="frame" style="margin-top:10px">
+            <b>Log das Cartas</b>
+            <div id="cardLog" class="log"></div>
+          </div>
+        </div>
+
+        <!-- ====== TAB ARENA (auto) ====== -->
+        <div data-view="arena" hidden>
+          <canvas id="arena" width="1024" height="420" style="width:100%;border-radius:14px;border:1px solid #1a2344;background:linear-gradient(180deg,#0b0f1b,#0a0d18)"></canvas>
+          <div class="row" style="margin-top:8px">
+            <button id="aStart" class="ok">▶ Iniciar</button>
+            <button id="aFast">⏩ x2</button>
+            <button id="aHeal" class="primary">✚ Cura (10 DC)</button>
+            <button id="aUlt" class="danger">☼ Ultimate (25 DC)</button>
+            <span class="chip">Round: <b id="aRound">0</b></span>
+            <span class="chip">Vitórias: <b id="aWins">0</b></span>
+          </div>
+          <div class="frame" style="margin-top:10px">
+            <b>Log da Arena</b>
+            <div id="alog" class="log"></div>
+          </div>
+        </div>
+
+        <!-- ====== TAB TOTENS ====== -->
+        <div data-view="totens" hidden>
+          <div class="grid2">
+            <div class="frame">
+              <b>Totens Transcendidos</b>
+              <div id="tList" class="row" style="margin-top:6px"></div>
+            </div>
+            <div class="frame">
+              <b>Console</b>
+              <div id="totemLog" class="log"></div>
+              <div class="row" style="margin-top:8px">
+                <input id="tInput" placeholder="Pergunte algo..." style="flex:1;padding:10px;border-radius:10px;border:1px solid #1a2344;background:#0b0f1c;color:var(--ink)"/>
+                <button id="tSend" class="primary">Enviar</button>
+                <button id="tSpeak">🔊</button>
+              </div>
+              <small class="mut">Ex.: "Como ativar combos?"</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== TAB MERCADO ====== -->
+        <div data-view="mercado" hidden>
+          <div class="grid2">
+            <div class="frame">
+              <b>Mercado Darkcoin</b>
+              <div id="mList" class="row" style="margin-top:6px"></div>
+            </div>
+            <div class="frame">
+              <b>Inventário</b>
+              <div id="inv" class="log" style="height:230px"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== TAB LORE ====== -->
+        <div data-view="lore" hidden>
+          <div class="grid2">
+            <div class="frame"><b>Fragmentos</b><div id="loreList" class="log" style="height:230px"></div></div>
+            <div class="frame"><b>Conquistas</b><div id="achList" class="log" style="height:230px"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIREITA: STATUS -->
+    <aside class="panel">
+      <div class="hd"><b>📊 Status</b><span class="chip">Acelerador Neural</span></div>
+      <div class="bd">
+        <div class="frame">
+          <b>Resumo</b>
+          <div class="row mut"><span>XP:</span><b id="xp">0 / 100</b></div>
+          <div class="row mut"><span>Sombras Ativas:</span><b id="ally">0</b></div>
+          <div class="row mut"><span>Cartas Coletadas:</span><b id="cardsCollected">0</b></div>
+        </div>
+        <div class="frame" style="margin-top:10px">
+          <b>Atalhos</b>
+          <div class="row mut">
+            <span class="kbd">Q</span> Curse
+            <span class="kbd">W</span> Sacrifice
+            <span class="kbd">E</span> Ward
+            <span class="kbd">R</span> End Turn
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<!-- Mascote -->
+<div class="mascot" role="complementary" aria-label="Assistente Robô">
+  <div class="row" style="align-items:center">
+    <div class="face" aria-hidden="true"></div>
+    <div><b>BOT NEURAL</b><div class="mut" id="hint">Dica: maldições tornam o inimigo vulnerável.</div></div>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <button id="mkHint">💬 Nova dica</button>
+    <button id="mkMute">🔈</button>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
