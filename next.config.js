@@ -1,3 +1,6 @@
+const isGithubPages = process.env.GITHUB_PAGES === 'true'
+const repoName = 'Arena'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -15,6 +18,7 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    ...(isGithubPages ? { unoptimized: true } : {}),
   },
   async redirects() {
     return [
@@ -33,6 +37,13 @@ const nextConfig = {
       },
     ]
   },
+}
+
+if (isGithubPages) {
+  nextConfig.output = 'export'
+  nextConfig.basePath = `/${repoName}`
+  nextConfig.assetPrefix = `/${repoName}`
+  nextConfig.trailingSlash = true
 }
 
 module.exports = nextConfig
