@@ -27,6 +27,56 @@ export default function Home() {
     level: 1,
     experience: 0
   })
+  const [enemyState, setEnemyState] = useState<{ hp: number; name: string }>({
+    hp: 100,
+    name: "Espectro da Vaidade",
+  })
+  const [battleLog, setBattleLog] = useState<string[]>([
+    "• Você entra em combate com o Espectro da Vaidade",
+    "• O espectro sussurra sobre suas inseguranças",
+    "• Sua sanidade oscila conforme a batalha se intensifica",
+  ])
+
+  const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value))
+  const addLog = (message: string) => setBattleLog(prev => [...prev, `• ${message}`].slice(-10))
+
+  const isBattleOver = enemyState.hp <= 0 || playerState.hp <= 0 || playerState.sanity <= 0
+
+  const handlePhysicalAttack = () => {
+    if (isBattleOver || playerState.mp < 5) return
+    const damage = Math.floor(10 + Math.random() * 12) // 10-21
+    setPlayerState(prev => ({ ...prev, mp: clamp(prev.mp - 5, 0, 999) }))
+    setEnemyState(prev => ({ ...prev, hp: clamp(prev.hp - damage, 0, 100) }))
+    addLog(`Você desferiu um golpe físico causando ${damage} de dano.`)
+  }
+
+  const handlePsychAnalysis = () => {
+    if (isBattleOver || playerState.mp < 10) return
+    const damage = Math.floor(16 + Math.random() * 15) // 16-30
+    setPlayerState(prev => ({
+      ...prev,
+      mp: clamp(prev.mp - 10, 0, 999),
+      sanity: clamp(prev.sanity - 3, 0, 100),
+    }))
+    setEnemyState(prev => ({ ...prev, hp: clamp(prev.hp - damage, 0, 100) }))
+    addLog(`Sua análise psicológica expôs fraquezas, causando ${damage} de dano.`)
+  }
+
+  const handleMeditate = () => {
+    if (isBattleOver) return
+    setPlayerState(prev => ({ ...prev, hp: clamp(prev.hp + 15, 0, 100) }))
+    addLog("Você meditou e recuperou 15 de HP.")
+  }
+
+  const handleResetBattle = () => {
+    setPlayerState({ hp: 100, mp: 50, sanity: 75, level: 1, experience: 0 })
+    setEnemyState({ hp: 100, name: "Espectro da Vaidade" })
+    setBattleLog([
+      "• Você entra em combate com o Espectro da Vaidade",
+      "• O espectro sussurra sobre suas inseguranças",
+      "• Sua sanidade oscila conforme a batalha se intensifica",
+    ])
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -69,7 +119,7 @@ export default function Home() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-purple-800 rounded-full flex items-center justify-center">
-                  <Raven className="w-6 h-6 text-white" />
+                  <Bird className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold bg-gradient-to-r from-red-400 to-purple-400 bg-clip-text text-transparent">
@@ -218,7 +268,7 @@ export default function Home() {
                         className="object-cover"
                       />
                     </div>
-                    <div className="relative aspect-square rounded-lg overflow-hidden border border-900/30">
+                    <div className="relative aspect-square rounded-lg overflow-hidden border border-red-900/30">
                       <Image
                         src="/specter-vanity.png"
                         alt="Espectro da Vaidade"
@@ -298,9 +348,17 @@ export default function Home() {
             <TabsContent value="battle">
               <Card className="bg-gradient-to-br from-red-900/30 to-black/50 border-red-900/30 p-8">
                 <h3 className="text-2xl font-bold mb-6">Confronto nas Sombras</h3>
+                <div className="w-full mb-8 rounded-lg overflow-hidden border border-red-900/30 bg-black/60">
+                  <iframe
+                    src="/batalha/index.html"
+                    title="Arena das Sombras - Batalha"
+                    className="w-full"
+                    style={{ height: "720px" }}
+                  />
+                </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-4">
-                    <h4 className="text-xl font-bold text-red-400">Espectro da Vaidade</h4>
+                    <h4 className="text-xl font-bold text-red-400">{enemyState.name}</h4>
                     <div className="relative aspect-square rounded-lg overflow-hidden border border-red-900/30">
                       <Image
                         src="/specter-vanity.png"
@@ -316,9 +374,9 @@ export default function Home() {
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span className="text-sm text-gray-400">Vida do Inimigo</span>
-                        <span className="text-sm text-red-400">85/100</span>
+                        <span className="text-sm text-red-400">{enemyState.hp}/100</span>
                       </div>
-                      <Progress value={85} className="h-2 bg-gray-800" />
+                      <Progress value={enemyState.hp} className="h-2 bg-gray-800" />
                     </div>
                   </div>
                   
@@ -327,26 +385,23 @@ export default function Home() {
                     <div className="space-y-3">
                       <Button 
                         className="w-full bg-red-600 hover:bg-red-700"
-                        onClick={() => {
-                          setPlayerState(prev => ({ ...prev, mp: prev.mp - 5 }))
-                        }}
+                        onClick={handlePhysicalAttack}
+                        disabled={isBattleOver || playerState.mp < 5}
                       >
                         Ataque Físico (-5 MP)
                       </Button>
                       <Button 
                         className="w-full bg-purple-600 hover:bg-purple-700"
-                        onClick={() => {
-                          setPlayerState(prev => ({ ...prev, mp: prev.mp - 10, sanity: prev.sanity - 3 }))
-                        }}
+                        onClick={handlePsychAnalysis}
+                        disabled={isBattleOver || playerState.mp < 10}
                       >
                         Análise Psicológica (-10 MP, -3 Sanidade)
                       </Button>
                       <Button 
                         variant="outline"
                         className="w-full border-blue-500 text-blue-300"
-                        onClick={() => {
-                          setPlayerState(prev => ({ ...prev, hp: prev.hp + 15 }))
-                        }}
+                        onClick={handleMeditate}
+                        disabled={isBattleOver}
                       >
                         Meditar e Curar (+15 HP)
                       </Button>
@@ -355,9 +410,23 @@ export default function Home() {
                     <div className="mt-6 p-4 bg-black/50 rounded border border-gray-700">
                       <h5 className="font-bold mb-2">Log de Batalha</h5>
                       <div className="text-sm text-gray-400 space-y-1">
-                        <p>• Você entra em combate com o Espectro da Vaidade</p>
-                        <p>• O espectro sussurra sobre suas inseguranças</p>
-                        <p>• Sua sanidade oscila conforme a batalha se intensifica</p>
+                        {battleLog.map((entry, idx) => (
+                          <p key={idx}>{entry}</p>
+                        ))}
+                        {isBattleOver && (
+                          <p className="text-red-300">
+                            {enemyState.hp <= 0
+                              ? "• Você derrotou o Espectro da Vaidade!"
+                              : playerState.hp <= 0
+                              ? "• Você foi derrotado..."
+                              : "• Sua mente sucumbiu às sombras..."}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mt-4">
+                        <Button variant="outline" className="border-gray-600 text-gray-200" onClick={handleResetBattle}>
+                          Reiniciar Batalha
+                        </Button>
                       </div>
                     </div>
                   </div>
