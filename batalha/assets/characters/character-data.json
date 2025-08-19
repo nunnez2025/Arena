@@ -1,0 +1,106 @@
+{
+  "hero": {
+    "name": "Guerreiro das Sombras",
+    "portrait": "hero-portrait.png",
+    "spritesheet": "hero-spritesheet.png",
+    "animations": {
+      "idle": {
+        "frames": 4,
+        "frameWidth": 64,
+        "frameHeight": 64,
+        "duration": 2000
+      },
+      "attack": {
+        "frames": 6,
+        "frameWidth": 64,
+        "frameHeight": 64,
+        "duration": 800
+      },
+      "cast": {
+        "frames": 8,
+        "frameWidth": 64,
+        "frameHeight": 64,
+        "duration": 1500
+      },
+      "hurt": {
+        "frames": 3,
+        "frameWidth": 64,
+        "frameHeight": 64,
+        "duration": 500
+      },
+      "defend": {
+        "frames": 2,
+        "frameWidth": 64,
+        "frameHeight": 64,
+        "duration": 1000
+      },
+      "death": {
+        "frames": 5,
+        "frameWidth": 64,
+        "frameHeight": 64,
+        "duration": 1200
+      }
+    },
+    "stats": {
+      "maxHp": 100,
+      "maxMp": 50,
+      "attack": 25,
+      "defense": 15,
+      "speed": 20,
+      "criticalRate": 0.1,
+      "dodgeRate": 0.05
+    }
+  },
+  "enemy": {
+    "name": "Dragão Sombrio",
+    "portrait": "enemy-portrait.png",
+    "spritesheet": "enemy-spritesheet.png",
+    "animations": {
+      "idle": {
+        "frames": 4,
+        "frameWidth": 96,
+        "frameHeight": 96,
+        "duration": 2500
+      },
+      "attack": {
+        "frames": 6,
+        "frameWidth": 96,
+        "frameHeight": 96,
+        "duration": 1000
+      },
+      "cast": {
+        "frames": 8,
+        "frameWidth": 96,
+        "frameHeight": 96,
+        "duration": 1800
+      },
+      "hurt": {
+        "frames": 3,
+        "frameWidth": 96,
+        "frameHeight": 96,
+        "duration": 600
+      },
+      "defend": {
+        "frames": 2,
+        "frameWidth": 96,
+        "frameHeight": 96,
+        "duration": 1200
+      },
+      "death": {
+        "frames": 7,
+        "frameWidth": 96,
+        "frameHeight": 96,
+        "duration": 1500
+      }
+    },
+    "stats": {
+      "maxHp": 150,
+      "maxMp": 30,
+      "attack": 30,
+      "defense": 20,
+      "speed": 15,
+      "criticalRate": 0.08,
+      "dodgeRate": 0.03
+    }
+  }
+}
