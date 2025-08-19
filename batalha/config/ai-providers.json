@@ -1,0 +1,73 @@
+{
+  "providers": {
+    "openai": {
+      "name": "OpenAI GPT-4",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "model": "gpt-4",
+      "apiKey": "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",
+      "headers": {
+        "Authorization": "Bearer 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",
+        "Content-Type": "application/json"
+      },
+      "maxTokens": 150,
+      "temperature": 0.7,
+      "timeout": 10000,
+      "priority": 1
+    },
+    "gemini": {
+      "name": "Google Gemini Pro",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
+      "model": "gemini-pro",
+      "apiKey": "AIzaSyBRxsnUY-PTT95EiY6yVTCaDz7DeJLgc9E",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "maxTokens": 150,
+      "temperature": 0.6,
+      "timeout": 8000,
+      "priority": 2
+    },
+    "deepseek": {
+      "name": "DeepSeek AI",
+      "endpoint": "https://api.deepseek.com/v1/chat/completions",
+      "model": "deepseek-chat",
+      "apiKey": "sk-4001fb4f0ab44836817907e524a520ae",
+      "headers": {
+        "Authorization": "Bearer sk-4001fb4f0ab44836817907e524a520ae",
+        "Content-Type": "application/json"
+      },
+      "maxTokens": 150,
+      "temperature": 0.5,
+      "timeout": 8000,
+      "priority": 3
+    },
+    "grok": {
+      "name": "xAI Grok",
+      "endpoint": "https://api.x.ai/v1/chat/completions",
+      "model": "grok-beta",
+      "apiKey": "xai-lm9TeAFhMVeOSjlzrUeTkth25T3dmy692MbBIGOKoibjGbajmeMwvxBJnRO3KyxIVelRnjCj7nRkm6M2FlowiseV2Zu_LGe9GoO4JIbqejaAevJ62pew-7AD7uqvITCw40",
+      "headers": {
+        "Authorization": "Bearer xai-lm9TeAFhMVeOSjlzrUeTkth25T3dmy692MbBIGOKoibjGbajmeMwvxBJnRO3KyxIVelRnjCj7nRkm6M2FlowiseV2Zu_LGe9GoO4JIbqejaAevJ62pew-7AD7uqvITCw40",
+        "Content-Type": "application/json"
+      },
+      "maxTokens": 150,
+      "temperature": 0.8,
+      "timeout": 12000,
+      "priority": 4
+    }
+  },
+  "fallbackChain": ["openai", "gemini", "deepseek", "grok", "local"],
+  "settings": {
+    "maxRetries": 3,
+    "retryDelay": 1000,
+    "cacheEnabled": true,
+    "cacheTTL": 300000,
+    "debugMode": true,
+    "logRequests": true
+  },
+  "battlePrompts": {
+    "systemPrompt": "You are a tactical AI for a cyber-occult NFT battle game called 'Sombras'. You control Shadow entities with unique classes, elements, and affinities. Make strategic decisions based on combat effectiveness, elemental advantages, and current battle state.",
+    "responseFormat": "Respond ONLY with valid JSON: {\"targetId\": \"enemy_id\", \"type\": \"attack\", \"reasoning\": \"brief explanation\"}",
+    "maxResponseTime": 5000
+  }
+}
