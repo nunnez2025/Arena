@@ -444,7 +444,7 @@
 
     async nextTurn() {
       // Check end
-      if (this.hero.hp <= 0 || this.enemy hp <= 0) {
+      if (this.hero.hp <= 0 || this.enemy.hp <= 0) {
         await this.endBattle()
         return
       }
@@ -642,7 +642,7 @@
     }
 
     async restartBattle() {
-      this.hero hp = this.hero.maxHp
+      this.hero.hp = this.hero.maxHp
       this.hero.mp = this.hero.maxMp
       this.enemy.hp = this.enemy.maxHp
       this.enemy.mp = this.enemy.maxMp
