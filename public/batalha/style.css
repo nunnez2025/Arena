@@ -13,6 +13,29 @@ body {
   user-select: none;
 }
 
+/* Keyboard focus feedback for buttons */
+.action-btn.focused,
+.magic-btn.focused {
+  outline: 2px solid #64ffda;
+  transform: scale(1.03);
+}
+
+/* Debug overlay */
+.debug-overlay {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #00ff7f;
+  font-family: monospace;
+  font-size: 12px;
+  padding: 6px 8px;
+  z-index: 1200;
+  border: 1px solid #00ff7f;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
 /* Loading Screen */
 .loading-screen {
   position: fixed;
