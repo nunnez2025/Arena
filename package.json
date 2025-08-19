@@ -5,13 +5,13 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@10",
+  "packageManager": "pnpm@10.11.1",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "export": "GITHUB_PAGES=true next build && next export -o out"
+    "export": "GITHUB_PAGES=true next build"
   },
   "dependencies": {
     "@colyseus/auth": "latest",
