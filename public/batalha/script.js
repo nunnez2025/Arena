@@ -306,6 +306,31 @@
           if (cmd === 'confirm') buttons[index]?.click()
         }
       }, 100)
+
+      // Touch controls (mobile)
+      const mc = document.getElementById('mobileControls')
+      if (mc) {
+        mc.querySelectorAll('.mc-btn').forEach((btn) => {
+          const cmd = btn.getAttribute('data-touch')
+          const push = () => {
+            if (this.gameState === 'battle' && this.turnQueue[this.currentTurn]?.type === 'hero') {
+              switch (cmd) {
+                case 'up':
+                case 'down':
+                case 'left':
+                case 'right':
+                case 'confirm':
+                case 'cancel':
+                case 'special':
+                  this.inputBuffer.push(cmd)
+                  break
+              }
+            }
+          }
+          btn.addEventListener('touchstart', (e) => { e.preventDefault(); push() }, { passive: false })
+          btn.addEventListener('click', (e) => { e.preventDefault(); push() })
+        })
+      }
     }
 
     initializeCanvases() {
@@ -419,7 +444,7 @@
 
     async nextTurn() {
       // Check end
-      if (this.hero.hp <= 0 || this.enemy.hp <= 0) {
+      if (this.hero.hp <= 0 || this.enemy hp <= 0) {
         await this.endBattle()
         return
       }
@@ -617,7 +642,7 @@
     }
 
     async restartBattle() {
-      this.hero.hp = this.hero.maxHp
+      this.hero hp = this.hero.maxHp
       this.hero.mp = this.hero.maxMp
       this.enemy.hp = this.enemy.maxHp
       this.enemy.mp = this.enemy.maxMp
