@@ -2,6 +2,10 @@
   "name": "shadow-game-final-fantasy",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18 <21"
+  },
+  "packageManager": "pnpm@9",
   "scripts": {
     "build": "next build",
     "dev": "next dev",

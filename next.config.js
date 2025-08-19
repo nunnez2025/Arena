@@ -16,10 +16,19 @@ const nextConfig = {
       },
     ],
   },
-  async rewrites() {
+  async redirects() {
     return [
       {
         source: '/batalha',
+        destination: '/batalha/',
+        permanent: false,
+      },
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/batalha/',
         destination: '/batalha/index.html',
       },
     ]
