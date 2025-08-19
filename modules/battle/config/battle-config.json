@@ -1,0 +1,285 @@
+{
+  "battleSystem": {
+    "turnTimeLimit": 30000,
+    "maxParticipants": 6,
+    "enableAI": true,
+    "enablePvP": true,
+    "enableSpectators": true
+  },
+  "environments": {
+    "forest": {
+      "name": "Forest Clearing",
+      "background": "forest_battle.jpg",
+      "music": "forest_battle_theme.mp3",
+      "effects": ["falling_leaves", "wind_sound"],
+      "lighting": "natural"
+    },
+    "dungeon": {
+      "name": "Dark Dungeon",
+      "background": "dungeon_battle.jpg",
+      "music": "dungeon_battle_theme.mp3",
+      "effects": ["torch_flicker", "echo_sound"],
+      "lighting": "dim"
+    },
+    "arena": {
+      "name": "Battle Arena",
+      "background": "arena_battle.jpg",
+      "music": "arena_battle_theme.mp3",
+      "effects": ["crowd_cheer", "dust_particles"],
+      "lighting": "bright"
+    }
+  },
+  "classes": {
+    "warrior": {
+      "name": "Warrior",
+      "baseStats": {
+        "hp": 120,
+        "mp": 30,
+        "attack": 25,
+        "defense": 20,
+        "speed": 8
+      },
+      "skills": ["power_strike", "shield_bash", "berserker_rage"],
+      "equipment": ["sword", "shield", "heavy_armor"]
+    },
+    "mage": {
+      "name": "Mage",
+      "baseStats": {
+        "hp": 80,
+        "mp": 80,
+        "attack": 15,
+        "defense": 10,
+        "speed": 12
+      },
+      "skills": ["fireball", "ice_shard", "heal", "mana_shield"],
+      "equipment": ["staff", "robe", "magic_ring"]
+    },
+    "rogue": {
+      "name": "Rogue",
+      "baseStats": {
+        "hp": 100,
+        "mp": 50,
+        "attack": 20,
+        "defense": 15,
+        "speed": 15
+      },
+      "skills": ["backstab", "poison_blade", "stealth", "quick_strike"],
+      "equipment": ["dagger", "leather_armor", "cloak"]
+    }
+  },
+  "skills": {
+    "power_strike": {
+      "name": "Power Strike",
+      "type": "damage",
+      "power": 50,
+      "mpCost": 10,
+      "cooldown": 0,
+      "targetType": "single_enemy",
+      "animation": "power_strike",
+      "description": "A powerful melee attack that deals extra damage"
+    },
+    "fireball": {
+      "name": "Fireball",
+      "type": "damage",
+      "power": 40,
+      "mpCost": 15,
+      "cooldown": 1,
+      "targetType": "single_enemy",
+      "animation": "fire_cast",
+      "element": "fire",
+      "description": "Launches a blazing fireball at the enemy"
+    },
+    "heal": {
+      "name": "Heal",
+      "type": "heal",
+      "power": 50,
+      "mpCost": 12,
+      "cooldown": 0,
+      "targetType": "single_ally",
+      "animation": "heal_cast",
+      "description": "Restores HP to target ally"
+    },
+    "backstab": {
+      "name": "Backstab",
+      "type": "damage",
+      "power": 35,
+      "mpCost": 8,
+      "cooldown": 2,
+      "targetType": "single_enemy",
+      "animation": "backstab",
+      "criticalChance": 0.3,
+      "description": "A sneaky attack with high critical chance"
+    },
+    "shield_bash": {
+      "name": "Shield Bash",
+      "type": "damage",
+      "power": 25,
+      "mpCost": 5,
+      "cooldown": 1,
+      "targetType": "single_enemy",
+      "animation": "shield_bash",
+      "statusEffect": {
+        "type": "stun",
+        "duration": 1,
+        "chance": 0.5
+      },
+      "description": "Bash enemy with shield, chance to stun"
+    },
+    "poison_blade": {
+      "name": "Poison Blade",
+      "type": "damage",
+      "power": 20,
+      "mpCost": 6,
+      "cooldown": 0,
+      "targetType": "single_enemy",
+      "animation": "poison_attack",
+      "statusEffect": {
+        "type": "poison",
+        "duration": 3,
+        "power": 8,
+        "chance": 0.8
+      },
+      "description": "Attack that inflicts poison damage over time"
+    }
+  },
+  "statusEffects": {
+    "poison": {
+      "name": "Poison",
+      "type": "damage_over_time",
+      "icon": "poison_icon",
+      "color": "#00ff00",
+      "description": "Takes damage each turn"
+    },
+    "regeneration": {
+      "name": "Regeneration",
+      "type": "heal_over_time",
+      "icon": "regen_icon",
+      "color": "#00ff88",
+      "description": "Restores HP each turn"
+    },
+    "stun": {
+      "name": "Stunned",
+      "type": "disable",
+      "icon": "stun_icon",
+      "color": "#ffff00",
+      "description": "Cannot act this turn"
+    },
+    "defense_boost": {
+      "name": "Shield",
+      "type": "stat_modifier",
+      "stat": "defense",
+      "modifier": 1.5,
+      "icon": "shield_icon",
+      "color": "#0088ff",
+      "description": "Increased defense"
+    }
+  },
+  "items": {
+    "health_potion": {
+      "name": "Health Potion",
+      "type": "consumable",
+      "effect": "heal",
+      "power": 30,
+      "usableInBattle": true,
+      "targetType": "single_ally",
+      "description": "Restores 30 HP"
+    },
+    "mana_potion": {
+      "name": "Mana Potion",
+      "type": "consumable",
+      "effect": "restore_mp",
+      "power": 20,
+      "usableInBattle": true,
+      "targetType": "self",
+      "description": "Restores 20 MP"
+    },
+    "antidote": {
+      "name": "Antidote",
+      "type": "consumable",
+      "effect": "cure_status",
+      "statusType": "poison",
+      "usableInBattle": true,
+      "targetType": "single_ally",
+      "description": "Cures poison status"
+    }
+  },
+  "enemies": {
+    "shadow_warrior": {
+      "name": "Shadow Warrior",
+      "level": 3,
+      "stats": {
+        "hp": 90,
+        "mp": 20,
+        "attack": 22,
+        "defense": 18,
+        "speed": 10
+      },
+      "skills": ["dark_slash", "shadow_step"],
+      "aiType": "aggressive",
+      "sprite": "shadow_warrior",
+      "dropTable": {
+        "gold": { "min": 20, "max": 40 },
+        "experience": 75,
+        "items": [{ "id": "health_potion", "chance": 0.3 }, { "id": "shadow_essence", "chance": 0.1 }]
+      }
+    },
+    "forest_goblin": {
+      "name": "Forest Goblin",
+      "level": 1,
+      "stats": {
+        "hp": 50,
+        "mp": 10,
+        "attack": 15,
+        "defense": 8,
+        "speed": 12
+      },
+      "skills": ["quick_stab"],
+      "aiType": "cowardly",
+      "sprite": "forest_goblin",
+      "dropTable": {
+        "gold": { "min": 5, "max": 15 },
+        "experience": 25,
+        "items": [{ "id": "health_potion", "chance": 0.2 }]
+      }
+    }
+  },
+  "aiTypes": {
+    "aggressive": {
+      "description": "Always attacks, prefers strongest attacks",
+      "behavior": {
+        "attackChance": 0.7,
+        "magicChance": 0.2,
+        "defendChance": 0.05,
+        "itemChance": 0.05
+      }
+    },
+    "defensive": {
+      "description": "Prefers defensive actions and healing",
+      "behavior": {
+        "attackChance": 0.4,
+        "magicChance": 0.3,
+        "defendChance": 0.2,
+        "itemChance": 0.1
+      }
+    },
+    "cowardly": {
+      "description": "Tries to flee or defend when low on health",
+      "behavior": {
+        "attackChance": 0.5,
+        "magicChance": 0.2,
+        "defendChance": 0.25,
+        "itemChance": 0.05,
+        "fleeThreshold": 0.3
+      }
+    },
+    "tactical": {
+      "description": "Uses status effects and strategic moves",
+      "behavior": {
+        "attackChance": 0.3,
+        "magicChance": 0.5,
+        "defendChance": 0.1,
+        "itemChance": 0.1
+      }
+    }
+  }
+}
