@@ -36,7 +36,25 @@ const state = {
   lore: [],
   ach: [],
   selectedTotem: null,
-  cardsCollected: 0
+  cardsCollected: 0,
+  // Sistema de evolução
+  playerShadow: {
+    name: "Sombra Básica",
+    evolution: 0,
+    evolutionStage: ["Sombra Básica", "Sombra Sombria", "Sombra Demoníaca", "Sombra Suprema"],
+    sprites: ["👤", "👥", "👹", "👺"],
+    colors: ["#6b7280", "#7c3aed", "#dc2626", "#fbbf24"],
+    xp: 0,
+    xpToEvolve: 100
+  },
+  enemyMonster: {
+    name: "Monstro Selvagem",
+    evolution: 0,
+    evolutionStage: ["Monstro Selvagem", "Monstro Enfurecido", "Monstro Demoníaco", "Monstro Supremo"],
+    sprites: ["🐺", "🐻", "🐉", "👹"],
+    colors: ["#6b7280", "#7c3aed", "#dc2626", "#fbbf24"],
+    level: 1
+  }
 };
 
 // Gerador de números aleatórios
@@ -97,7 +115,9 @@ function load() {
 
 // Canvas e desenho
 const canvas = document.getElementById('battle');
+const arenaCanvas = document.getElementById('arena');
 const ctx = canvas.getContext('2d');
+const arenaCtx = arenaCanvas.getContext('2d');
 let frame = 0;
 
 function drawScene() {
@@ -135,6 +155,78 @@ function drawScene() {
   requestAnimationFrame(drawScene);
 }
 
+// Arena Battle Animation
+function drawArenaBattle() {
+  if (!arenaCanvas) return;
+  
+  arenaCtx.fillStyle = '#0a0a0a';
+  arenaCtx.fillRect(0, 0, arenaCanvas.width, arenaCanvas.height);
+  
+  // Background effects
+  for (let i = 0; i < 30; i++) {
+    const x = (frame * 0.3 + i * 40) % arenaCanvas.width;
+    const y = (i * 25 + frame * 0.2) % arenaCanvas.height;
+    const alpha = 0.2 + Math.sin(frame * 0.05 + i) * 0.1;
+    
+    arenaCtx.fillStyle = `rgba(0, 255, 255, ${alpha})`;
+    arenaCtx.fillRect(x, y, 3, 3);
+  }
+  
+  // Player Shadow Animation
+  const playerX = 150;
+  const playerY = 300;
+  const playerSize = 60 + Math.sin(frame * 0.1) * 5;
+  
+  arenaCtx.fillStyle = state.playerShadow.colors[state.playerShadow.evolution];
+  arenaCtx.shadowColor = state.playerShadow.colors[state.playerShadow.evolution];
+  arenaCtx.shadowBlur = 20;
+  arenaCtx.fillRect(playerX - playerSize/2, playerY - playerSize/2, playerSize, playerSize);
+  arenaCtx.shadowBlur = 0;
+  
+  // Player Shadow Sprite
+  arenaCtx.font = '40px Arial';
+  arenaCtx.fillStyle = '#ffffff';
+  arenaCtx.textAlign = 'center';
+  arenaCtx.fillText(state.playerShadow.sprites[state.playerShadow.evolution], playerX, playerY + 15);
+  
+  // Enemy Monster Animation
+  const enemyX = 850;
+  const enemyY = 120;
+  const enemySize = 50 + Math.sin(frame * 0.08 + Math.PI) * 8;
+  
+  arenaCtx.fillStyle = state.enemyMonster.colors[state.enemyMonster.evolution];
+  arenaCtx.shadowColor = state.enemyMonster.colors[state.enemyMonster.evolution];
+  arenaCtx.shadowBlur = 15;
+  arenaCtx.fillRect(enemyX - enemySize/2, enemyY - enemySize/2, enemySize, enemySize);
+  arenaCtx.shadowBlur = 0;
+  
+  // Enemy Monster Sprite
+  arenaCtx.font = '35px Arial';
+  arenaCtx.fillStyle = '#ffffff';
+  arenaCtx.textAlign = 'center';
+  arenaCtx.fillText(state.enemyMonster.sprites[state.enemyMonster.evolution], enemyX, enemyY + 10);
+  
+  // Battle effects
+  if (state.arena.running) {
+    // Energy beams
+    const beamX = playerX + (enemyX - playerX) * (frame % 60) / 60;
+    const beamY = playerY + (enemyY - playerY) * (frame % 60) / 60;
+    
+    arenaCtx.strokeStyle = '#ff0000';
+    arenaCtx.lineWidth = 3;
+    arenaCtx.shadowColor = '#ff0000';
+    arenaCtx.shadowBlur = 10;
+    arenaCtx.beginPath();
+    arenaCtx.moveTo(playerX, playerY);
+    arenaCtx.lineTo(beamX, beamY);
+    arenaCtx.stroke();
+    arenaCtx.shadowBlur = 0;
+  }
+  
+  frame++;
+  requestAnimationFrame(drawArenaBattle);
+}
+
 function setBars() {
   const pBar = $('#php');
   const eBar = $('#ehp');
@@ -148,6 +240,118 @@ function setBars() {
   
   $('#pstats').textContent = `${state.p.hp}/${state.p.maxHp} HP | ${state.p.mp}/${state.p.maxMp} MP`;
   $('#estats').textContent = `${state.e.hp}/${state.e.maxHp} HP | ${state.e.mp}/${state.e.maxMp} MP`;
+}
+
+// Arena UI Updates
+function updateArenaUI() {
+  // Player Shadow
+  $('#playerEvolution').textContent = state.playerShadow.evolutionStage[state.playerShadow.evolution];
+  $('#playerLevel').textContent = state.lvl;
+  $('#playerHpBar').style.width = (state.p.hp / state.p.maxHp * 100) + '%';
+  $('#playerMpBar').style.width = (state.p.mp / state.p.maxMp * 100) + '%';
+  $('#playerXpBar').style.width = (state.playerShadow.xp / state.playerShadow.xpToEvolve * 100) + '%';
+  
+  // Enemy Monster
+  $('#enemyEvolution').textContent = state.enemyMonster.evolutionStage[state.enemyMonster.evolution];
+  $('#enemyLevel').textContent = state.enemyMonster.level;
+  $('#enemyHpBar').style.width = (state.e.hp / state.e.maxHp * 100) + '%';
+  $('#enemyMpBar').style.width = (state.e.mp / state.e.maxMp * 100) + '%';
+  
+  // Update colors based on evolution
+  const playerColor = state.playerShadow.colors[state.playerShadow.evolution];
+  const enemyColor = state.enemyMonster.colors[state.enemyMonster.evolution];
+  
+  $('#playerEvolution').style.color = playerColor;
+  $('#playerEvolution').style.textShadow = `0 0 10px ${playerColor}`;
+  $('#enemyEvolution').style.color = enemyColor;
+  $('#enemyEvolution').style.textShadow = `0 0 10px ${enemyColor}`;
+}
+
+// Evolution System
+function evolvePlayerShadow() {
+  if (state.playerShadow.evolution >= 3) {
+    aLog("Sua sombra já está na evolução máxima!");
+    return false;
+  }
+  
+  if (state.wallet < 50) {
+    aLog("Você precisa de 50 DC para evoluir!");
+    return false;
+  }
+  
+  state.wallet -= 50;
+  state.playerShadow.evolution++;
+  
+  // Stats boost
+  state.p.maxHp += 20;
+  state.p.maxMp += 10;
+  state.p.atk += 5;
+  state.p.hp = state.p.maxHp;
+  state.p.mp = state.p.maxMp;
+  
+  showEvolutionAnimation(state.playerShadow.evolutionStage[state.playerShadow.evolution], state.playerShadow.sprites[state.playerShadow.evolution]);
+  aLog(`<b style="color:#00ff88">EVOLUÇÃO!</b> ${state.playerShadow.evolutionStage[state.playerShadow.evolution]}`);
+  beep(800, .3);
+  
+  updateHUD();
+  updateArenaUI();
+  return true;
+}
+
+function evolveEnemyMonster() {
+  if (state.enemyMonster.evolution >= 3) return;
+  
+  state.enemyMonster.evolution++;
+  state.enemyMonster.level++;
+  
+  // Stats boost
+  state.e.maxHp += 15;
+  state.e.maxMp += 8;
+  state.e.atk += 3;
+  state.e.hp = state.e.maxHp;
+  state.e.mp = state.e.maxMp;
+  
+  aLog(`<b style="color:#ff4444">O monstro evoluiu para ${state.enemyMonster.evolutionStage[state.enemyMonster.evolution]}!</b>`);
+  updateArenaUI();
+}
+
+function showEvolutionAnimation(name, sprite) {
+  const overlay = $('#evolutionOverlay');
+  const evolutionName = $('#evolutionName');
+  const evolutionSprite = $('#evolutionSprite');
+  
+  evolutionName.textContent = name;
+  evolutionSprite.textContent = sprite;
+  
+  overlay.style.display = 'flex';
+  
+  setTimeout(() => {
+    overlay.style.display = 'none';
+  }, 3000);
+}
+
+// Battle Effects
+function createBattleEffect(x, y, color, type = 'particle') {
+  const effects = $('#battleEffects');
+  
+  if (type === 'particle') {
+    for (let i = 0; i < 10; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'effect-particle';
+      particle.style.left = x + 'px';
+      particle.style.top = y + 'px';
+      particle.style.backgroundColor = color;
+      particle.style.animationDelay = (i * 0.1) + 's';
+      
+      effects.appendChild(particle);
+      
+      setTimeout(() => {
+        if (particle.parentNode) {
+          particle.parentNode.removeChild(particle);
+        }
+      }, 2000);
+    }
+  }
 }
 
 function log(s) {
@@ -277,6 +481,7 @@ function initBattle() {
   state.turn = "player";
   $('#turnBanner').textContent = "Seu Turno";
   setBars();
+  updateArenaUI();
   log("Nova batalha iniciada!");
 }
 
@@ -324,14 +529,48 @@ function aVictory() {
   state.arena.wins++;
   state.wallet += 5;
   state.xp += 8;
+  state.playerShadow.xp += 15;
+  
+  // Check for evolution
+  if (state.playerShadow.xp >= state.playerShadow.xpToEvolve && state.playerShadow.evolution < 3) {
+    state.playerShadow.xp -= state.playerShadow.xpToEvolve;
+    state.playerShadow.evolution++;
+    state.playerShadow.xpToEvolve = Math.floor(state.playerShadow.xpToEvolve * 1.5);
+    
+    // Stats boost
+    state.p.maxHp += 20;
+    state.p.maxMp += 10;
+    state.p.atk += 5;
+    state.p.hp = state.p.maxHp;
+    state.p.mp = state.p.maxMp;
+    
+    showEvolutionAnimation(state.playerShadow.evolutionStage[state.playerShadow.evolution], state.playerShadow.sprites[state.playerShadow.evolution]);
+    aLog(`<b style="color:#00ff88">EVOLUÇÃO AUTOMÁTICA!</b> ${state.playerShadow.evolutionStage[state.playerShadow.evolution]}`);
+    beep(800, .3);
+  }
+  
+  // Random enemy evolution
+  if (Math.random() < 0.1 && state.enemyMonster.evolution < 3) {
+    evolveEnemyMonster();
+  }
+  
   levelCheck();
-  aLog(`<b style="color:#86efac">Vitória!</b> +5 DC, +8 XP`);
+  aLog(`<b style="color:#86efac">Vitória!</b> +5 DC, +8 XP, +15 XP Sombra`);
+  updateArenaUI();
   initBattle();
 }
 
 function aDefeat() {
   state.wallet = Math.max(0, state.wallet - 3);
-  aLog(`<b style="color:#fca5a5">Derrota</b> -3 DC`);
+  state.playerShadow.xp += 5;
+  
+  // Random enemy evolution
+  if (Math.random() < 0.15 && state.enemyMonster.evolution < 3) {
+    evolveEnemyMonster();
+  }
+  
+  aLog(`<b style="color:#fca5a5">Derrota</b> -3 DC, +5 XP Sombra`);
+  updateArenaUI();
   initBattle();
 }
 
@@ -465,6 +704,7 @@ function bind() {
     state.fast = !state.fast;
     $('#aFast').textContent = state.fast ? "⏩ x1" : "⏩ x2";
   };
+  $('#aEvolve').onclick = evolvePlayerShadow;
   
   // Tabs
   $$('.tab').forEach(tab => {
@@ -490,8 +730,10 @@ function bind() {
 function hydrate() {
   updateHUD();
   setBars();
+  updateArenaUI();
   initBattle();
   if (canvas) drawScene();
+  if (arenaCanvas) drawArenaBattle();
 }
 
 function boot() {

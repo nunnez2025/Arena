@@ -298,6 +298,46 @@
     .cardDesc {
       font-size: 8px;
     }
+    
+    /* Arena mobile adjustments */
+    .shadow-info {
+      width: 150px !important;
+      padding: 6px !important;
+    }
+    
+    .shadow-evolution {
+      font-size: 12px !important;
+    }
+    
+    .shadow-level {
+      font-size: 10px !important;
+    }
+    
+    .stat-bar {
+      font-size: 10px !important;
+    }
+    
+    .stat-bar span {
+      min-width: 20px !important;
+    }
+    
+    .evolution-content {
+      padding: 15px !important;
+    }
+    
+    .evolution-text {
+      font-size: 18px !important;
+    }
+    
+    .evolution-sprite {
+      width: 60px !important;
+      height: 60px !important;
+      font-size: 30px !important;
+    }
+    
+    .evolution-name {
+      font-size: 14px !important;
+    }
   }
   
   /* Melhorias de acessibilidade */
@@ -386,6 +426,185 @@
   }
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
   @media (max-width:640px){.grid2{grid-template-columns:1fr}}
+  
+  /* ======= ARENA BATTLE ======= */
+  .arena-battle-scene {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  
+  .battle-ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  .shadow-info {
+    position: absolute;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid var(--bord);
+    border-radius: 10px;
+    padding: 10px;
+    backdrop-filter: blur(5px);
+    pointer-events: auto;
+  }
+  
+  .player-shadow {
+    bottom: 20px;
+    left: 20px;
+    width: 200px;
+  }
+  
+  .enemy-shadow {
+    top: 20px;
+    right: 20px;
+    width: 200px;
+  }
+  
+  .shadow-sprite {
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  
+  .shadow-evolution {
+    font-weight: bold;
+    font-size: 14px;
+    color: var(--cyber);
+    text-shadow: 0 0 10px var(--cyber);
+    margin-bottom: 5px;
+  }
+  
+  .shadow-level {
+    font-size: 12px;
+    color: var(--gold);
+    text-shadow: 0 0 8px var(--gold);
+  }
+  
+  .shadow-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .stat-bar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+  }
+  
+  .stat-bar span {
+    min-width: 25px;
+    color: var(--ink);
+  }
+  
+  .stat-bar .bar {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--bord);
+  }
+  
+  .stat-bar .xp {
+    background: linear-gradient(90deg, var(--gold), #fbbf24);
+    box-shadow: 0 0 10px rgba(244,197,66,0.5);
+  }
+  
+  .battle-effects {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  
+  .effect-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: particleFloat 2s ease-out forwards;
+  }
+  
+  @keyframes particleFloat {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-50px) scale(0);
+    }
+  }
+  
+  .evolution-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, rgba(0,255,255,0.3) 0%, rgba(124,58,237,0.3) 50%, transparent 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    pointer-events: none;
+  }
+  
+  .evolution-content {
+    text-align: center;
+    background: rgba(0,0,0,0.8);
+    border: 2px solid var(--cyber);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 30px var(--cyber);
+  }
+  
+  .evolution-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--cyber);
+    text-shadow: 0 0 20px var(--cyber);
+    margin-bottom: 15px;
+    animation: evolutionPulse 1s ease-in-out infinite;
+  }
+  
+  @keyframes evolutionPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  
+  .evolution-sprite {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 10px;
+    background: var(--cyber);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    animation: evolutionSpin 2s linear infinite;
+  }
+  
+  @keyframes evolutionSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .evolution-name {
+    font-size: 16px;
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold);
+  }
   
   /* ======= MASCOTE ======= */
   .mascot{
@@ -531,12 +750,71 @@
 
         <!-- ====== TAB ARENA (auto) ====== -->
         <div data-view="arena" hidden>
-          <canvas id="arena" width="1024" height="420" style="width:100%;border-radius:14px;border:1px solid #1a2344;background:linear-gradient(180deg,#0b0f1b,#0a0d18)"></canvas>
+          <div class="arena-battle-scene">
+            <canvas id="arena" width="1024" height="420" style="width:100%;border-radius:14px;border:1px solid #1a2344;background:linear-gradient(180deg,#0b0f1b,#0a0d18)"></canvas>
+            
+            <!-- Interface de batalha -->
+            <div class="battle-ui">
+              <!-- Player Shadow -->
+              <div class="shadow-info player-shadow">
+                <div class="shadow-sprite" id="playerSprite">
+                  <div class="shadow-evolution" id="playerEvolution">Sombra Básica</div>
+                  <div class="shadow-level">Nv. <span id="playerLevel">1</span></div>
+                </div>
+                <div class="shadow-stats">
+                  <div class="stat-bar">
+                    <span>HP</span>
+                    <div class="bar"><div id="playerHpBar" class="hp" style="width:100%"></div></div>
+                  </div>
+                  <div class="stat-bar">
+                    <span>MP</span>
+                    <div class="bar"><div id="playerMpBar" class="mp" style="width:100%"></div></div>
+                  </div>
+                  <div class="stat-bar">
+                    <span>XP</span>
+                    <div class="bar"><div id="playerXpBar" class="xp" style="width:0%"></div></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Enemy Monster -->
+              <div class="shadow-info enemy-shadow">
+                <div class="shadow-sprite" id="enemySprite">
+                  <div class="shadow-evolution" id="enemyEvolution">Monstro Selvagem</div>
+                  <div class="shadow-level">Nv. <span id="enemyLevel">1</span></div>
+                </div>
+                <div class="shadow-stats">
+                  <div class="stat-bar">
+                    <span>HP</span>
+                    <div class="bar"><div id="enemyHpBar" class="hp" style="width:100%"></div></div>
+                  </div>
+                  <div class="stat-bar">
+                    <span>MP</span>
+                    <div class="bar"><div id="enemyMpBar" class="mp" style="width:100%"></div></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Battle Effects -->
+              <div class="battle-effects" id="battleEffects"></div>
+              
+              <!-- Evolution Animation -->
+              <div class="evolution-overlay" id="evolutionOverlay" style="display:none">
+                <div class="evolution-content">
+                  <div class="evolution-text">EVOLUÇÃO!</div>
+                  <div class="evolution-sprite" id="evolutionSprite"></div>
+                  <div class="evolution-name" id="evolutionName"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
           <div class="row" style="margin-top:8px">
-            <button id="aStart" class="ok">▶ Iniciar</button>
+            <button id="aStart" class="ok">▶ Iniciar Arena</button>
             <button id="aFast">⏩ x2</button>
             <button id="aHeal" class="primary">✚ Cura (10 DC)</button>
             <button id="aUlt" class="danger">☼ Ultimate (25 DC)</button>
+            <button id="aEvolve" class="cyber">⚡ Evoluir (50 DC)</button>
             <span class="chip">Round: <b id="aRound">0</b></span>
             <span class="chip">Vitórias: <b id="aWins">0</b></span>
           </div>
