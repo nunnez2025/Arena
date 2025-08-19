@@ -1,0 +1,60 @@
+{
+  "battleTheme": {
+    "file": "battle-theme.mp3",
+    "loop": true,
+    "volume": 0.3
+  },
+  "introTheme": {
+    "file": "intro-theme.mp3",
+    "loop": false,
+    "volume": 0.4
+  },
+  "victoryTheme": {
+    "file": "victory-theme.mp3",
+    "loop": false,
+    "volume": 0.5
+  },
+  "defeatTheme": {
+    "file": "defeat-theme.mp3",
+    "loop": false,
+    "volume": 0.4
+  },
+  "sfx": {
+    "swordSlash": {
+      "file": "sword-slash.mp3",
+      "volume": 0.7
+    },
+    "magicCast": {
+      "file": "magic-cast.mp3",
+      "volume": 0.6
+    },
+    "hitImpact": {
+      "file": "hit-impact.mp3",
+      "volume": 0.8
+    },
+    "healSound": {
+      "file": "heal-sound.mp3",
+      "volume": 0.5
+    },
+    "fireballCast": {
+      "file": "fireball-cast.mp3",
+      "volume": 0.7
+    },
+    "lightningStrike": {
+      "file": "lightning-strike.mp3",
+      "volume": 0.8
+    },
+    "shieldBlock": {
+      "file": "shield-block.mp3",
+      "volume": 0.6
+    },
+    "criticalHit": {
+      "file": "critical-hit.mp3",
+      "volume": 0.9
+    },
+    "missSound": {
+      "file": "miss-whoosh.mp3",
+      "volume": 0.4
+    }
+  }
+}

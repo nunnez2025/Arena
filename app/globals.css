@@ -1,0 +1,700 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Novas variáveis para paleta de cores aprimorada */
+  --game-primary: oklch(0.205 0.1 280); /* Um roxo escuro para elementos principais */
+  --game-secondary: oklch(0.97 0.05 280); /* Um roxo claro para fundos secundários */
+  --game-accent: oklch(0.6 0.2 40); /* Um laranja/dourado para destaques */
+  --game-text-light: oklch(0.985 0 0); /* Texto claro */
+  --game-text-dark: oklch(0.145 0 0); /* Texto escuro */
+  --game-border: oklch(0.5 0.05 280); /* Borda sutil */
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+
+  /* Novas variáveis para paleta de cores aprimorada no modo escuro */
+  --game-primary: oklch(0.8 0.1 280); /* Um roxo mais claro para elementos principais no modo escuro */
+  --game-secondary: oklch(0.2 0.05 280); /* Um roxo mais escuro para fundos secundários no modo escuro */
+  --game-accent: oklch(0.7 0.2 40); /* Um laranja/dourado para destaques */
+  --game-text-light: oklch(0.985 0 0); /* Texto claro */
+  --game-text-dark: oklch(0.145 0 0); /* Texto escuro */
+  --game-border: oklch(0.3 0.05 280); /* Borda sutil */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Mapeamento das novas variáveis de cor para o tema */
+  --color-game-primary: var(--game-primary);
+  --color-game-secondary: var(--game-secondary);
+  --color-game-accent: var(--game-accent);
+  --color-game-text-light: var(--game-text-light);
+  --color-game-text-dark: var(--game-text-dark);
+  --color-game-border: var(--game-border);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* Enhanced Game-specific animations with API integrations */
+@keyframes shadowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(147, 51, 234, 0.8);
+    transform: scale(1.05);
+  }
+}
+
+@keyframes cosmicGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+  }
+}
+
+@keyframes battleShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(-10px) rotate(-1deg);
+  }
+  20% {
+    transform: translateX(10px) rotate(1deg);
+  }
+  30% {
+    transform: translateX(-8px) rotate(-1deg);
+  }
+  40% {
+    transform: translateX(8px) rotate(1deg);
+  }
+  50% {
+    transform: translateX(-6px) rotate(-0.5deg);
+  }
+  60% {
+    transform: translateX(6px) rotate(0.5deg);
+  }
+  70% {
+    transform: translateX(-4px) rotate(-0.5deg);
+  }
+  80% {
+    transform: translateX(4px) rotate(0.5deg);
+  }
+  90% {
+    transform: translateX(-2px);
+  }
+}
+
+@keyframes floatingAnimation {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(-1deg);
+  }
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) translateX(20px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes energyPulse {
+  0% {
+    background: radial-gradient(circle, rgba(147, 51, 234, 0.8) 0%, transparent 70%);
+    transform: scale(1);
+  }
+  50% {
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, transparent 70%);
+    transform: scale(1.2);
+  }
+  100% {
+    background: radial-gradient(circle, rgba(147, 51, 234, 0.8) 0%, transparent 70%);
+    transform: scale(1);
+  }
+}
+
+@keyframes criticalHit {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    transform: scale(1.3) rotate(5deg);
+    filter: hue-rotate(90deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(-3deg);
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    transform: scale(1.2) rotate(2deg);
+    filter: hue-rotate(270deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes magicCast {
+  0% {
+    transform: scale(1) translateY(0);
+    box-shadow: 0 0 0 rgba(147, 51, 234, 0);
+  }
+  25% {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
+  }
+  50% {
+    transform: scale(1.2) translateY(-10px);
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+  }
+  75% {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.7);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    box-shadow: 0 0 0 rgba(147, 51, 234, 0);
+  }
+}
+
+/* Enhanced utility classes */
+.shadow-pulse {
+  animation: shadowPulse 2s ease-in-out infinite;
+}
+.cosmic-glow {
+  animation: cosmicGlow 3s ease-in-out infinite;
+}
+.battle-shake {
+  animation: battleShake 0.6s ease-in-out;
+}
+.floating {
+  animation: floatingAnimation 4s ease-in-out infinite;
+}
+.particle-float {
+  animation: particleFloat 3s ease-out infinite;
+}
+.energy-pulse {
+  animation: energyPulse 2s ease-in-out infinite;
+}
+.critical-hit {
+  animation: criticalHit 0.8s ease-in-out;
+}
+.magic-cast {
+  animation: magicCast 1.2s ease-in-out;
+}
+
+/* Enhanced scrollbar with game theme */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(147, 51, 234, 0.1) 100%);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8b5cf6 0%, #3b82f6 50%, #06b6d4 100%);
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #7c3aed 0%, #2563eb 50%, #0891b2 100%);
+}
+
+/* Game UI specific enhanced styles */
+.game-ui-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1000;
+  background: radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
+}
+
+.game-ui-overlay > * {
+  pointer-events: auto;
+}
+
+.battle-arena {
+  background: radial-gradient(circle at 20% 80%, rgba(147, 51, 234, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.3) 0%, transparent 50%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(147, 51, 234, 0.2) 50%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.nft-card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.nft-card-hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.nft-card-hover:hover::before {
+  left: 100%;
+}
+
+.nft-card-hover:hover {
+  transform: translateY(-8px) scale(1.03) rotateX(5deg);
+  box-shadow: 0 25px 50px rgba(147, 51, 234, 0.4), 0 0 0 1px rgba(147, 51, 234, 0.3), inset 0 1px 0
+    rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive game container with aspect ratio */
+.game-container {
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  max-height: 100vh;
+  margin: 0 auto;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(147, 51, 234, 0.3);
+}
+
+@media (max-width: 768px) {
+  .game-container {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Enhanced loading animations */
+.loading-spinner {
+  border: 4px solid rgba(147, 51, 234, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #8b5cf6;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  position: relative;
+}
+
+.loading-spinner::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border: 2px solid transparent;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 2s linear infinite reverse;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Enhanced text effects */
+.text-shadow-glow {
+  text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+}
+
+.text-gradient-animated {
+  background: linear-gradient(-45deg, #8b5cf6, #3b82f6, #06b6d4, #10b981, #f59e0b, #ef4444);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Damage number animations */
+.damage-number {
+  position: absolute;
+  font-weight: bold;
+  font-size: 2rem;
+  pointer-events: none;
+  z-index: 1000;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.damage-number.critical {
+  font-size: 2.5rem;
+  color: #fbbf24;
+  animation: criticalDamage 2s ease-out forwards;
+}
+
+.damage-number.heal {
+  color: #10b981;
+  animation: healNumber 2s ease-out forwards;
+}
+
+.damage-number.normal {
+  color: #ef4444;
+  animation: normalDamage 2s ease-out forwards;
+}
+
+@keyframes criticalDamage {
+  0% {
+    transform: scale(0) rotate(-10deg);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1.3) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8) translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+@keyframes healNumber {
+  0% {
+    transform: scale(0) translateY(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1.2) translateY(-10px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(-80px);
+    opacity: 0;
+  }
+}
+
+@keyframes normalDamage {
+  0% {
+    transform: scale(0) translateY(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1.1) translateY(-5px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9) translateY(-60px);
+    opacity: 0;
+  }
+}
+
+/* Particle system styles */
+.particle-system {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: particleFloat 3s ease-out infinite;
+}
+
+.particle.blue {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, transparent 70%);
+}
+.particle.cyan {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.8) 0%, transparent 70%);
+}
+.particle.green {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.8) 0%, transparent 70%);
+}
+
+/* Button hover effects */
+.btn-game {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-game::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.btn-game:hover::before {
+  left: 100%;
+}
+
+.btn-game:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Progress bar enhancements */
+.progress-bar {
+  position: relative;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.progress-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+  animation: progressShine 2s ease-in-out infinite;
+}
+
+@keyframes progressShine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Modal and overlay effects */
+.modal-backdrop {
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive design enhancements */
+@media (max-width: 640px) {
+  .text-gradient-animated {
+    font-size: 2rem;
+  }
+  .damage-number {
+    font-size: 1.5rem;
+  }
+  .damage-number.critical {
+    font-size: 2rem;
+  }
+  .game-container {
+    border-radius: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating,
+  .shadow-pulse,
+  .cosmic-glow,
+  .particle-float,
+  .energy-pulse {
+    animation: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .text-gradient-animated {
+    background: linear-gradient(-45deg, #ffffff, #000000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Font definitions */
+@font-face {
+  font-family: 'GameFontHeading';
+  src: url('/fonts/GameFontHeading.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GameFontBody';
+  src: url('/fonts/GameFontBody.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --font-heading: 'GameFontHeading', sans-serif;
+  --font-body: 'GameFontBody', sans-serif;
+}
+
+

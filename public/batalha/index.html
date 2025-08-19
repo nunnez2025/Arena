@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena de Batalha - Final Fantasy Clone</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">⚔️</div>
+            <div class="loading-text">Carregando Arena...</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Battle Intro -->
+    <div id="battleIntro" class="battle-intro hidden">
+        <div class="intro-content">
+            <h1 class="intro-title">BATALHA ÉPICA</h1>
+            <div class="vs-container">
+                <div class="character-intro left">
+                    <img id="heroIntroImg" src="assets/characters/hero-portrait.png" alt="Herói">
+                    <h2 id="heroIntroName">Guerreiro das Sombras</h2>
+                </div>
+                <div class="vs-text">VS</div>
+                <div class="character-intro right">
+                    <img id="enemyIntroImg" src="assets/characters/enemy-portrait.png" alt="Inimigo">
+                    <h2 id="enemyIntroName">Dragão Sombrio</h2>
+                </div>
+            </div>
+            <div class="intro-subtitle">Prepare-se para a batalha!</div>
+        </div>
+    </div>
+
+    <!-- Main Battle Scene -->
+    <div id="battleScene" class="battle-scene hidden">
+        <!-- Background Effects -->
+        <canvas id="backgroundCanvas" class="background-canvas"></canvas>
+        <div class="battle-background">
+            <div class="fog-layer"></div>
+            <div class="particle-layer"></div>
+            <div class="lightning-layer"></div>
+        </div>
+
+        <!-- Screen Effects -->
+        <div id="screenFlash" class="screen-flash"></div>
+        <div id="cameraShake" class="camera-shake-container">
+
+            <!-- Battle Arena -->
+            <div class="battle-arena">
+                <!-- Turn Queue Display -->
+                <div class="turn-queue">
+                    <h3>Ordem dos Turnos</h3>
+                    <div id="turnOrder" class="turn-icons"></div>
+                </div>
+
+                <!-- Characters Container -->
+                <div class="characters-container">
+                    <!-- Hero Side -->
+                    <div class="character-side hero-side">
+                        <div id="heroCharacter" class="character hero">
+                            <canvas id="heroCanvas" class="character-canvas"></canvas>
+                            <div class="character-shadow"></div>
+                        </div>
+                        <div class="character-ui hero-ui">
+                            <div class="character-portrait">
+                                <img id="heroPortrait" src="assets/characters/hero-portrait.png" alt="Herói">
+                                <div class="portrait-frame"></div>
+                            </div>
+                            <div class="character-stats">
+                                <h3 id="heroName">Guerreiro das Sombras</h3>
+                                <div class="stat-bar hp-bar">
+                                    <label>HP</label>
+                                    <div class="bar-container">
+                                        <div id="heroHpBar" class="bar-fill hp-fill"></div>
+                                        <span id="heroHpText" class="bar-text">100/100</span>
+                                    </div>
+                                </div>
+                                <div class="stat-bar mp-bar">
+                                    <label>MP</label>
+                                    <div class="bar-container">
+                                        <div id="heroMpBar" class="bar-fill mp-fill"></div>
+                                        <span id="heroMpText" class="bar-text">50/50</span>
+                                    </div>
+                                </div>
+                                <div class="status-effects" id="heroStatusEffects"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enemy Side -->
+                    <div class="character-side enemy-side">
+                        <div id="enemyCharacter" class="character enemy">
+                            <canvas id="enemyCanvas" class="character-canvas"></canvas>
+                            <div class="character-shadow"></div>
+                        </div>
+                        <div class="character-ui enemy-ui">
+                            <div class="character-portrait">
+                                <img id="enemyPortrait" src="assets/characters/enemy-portrait.png" alt="Inimigo">
+                                <div class="portrait-frame"></div>
+                            </div>
+                            <div class="character-stats">
+                                <h3 id="enemyName">Dragão Sombrio</h3>
+                                <div class="stat-bar hp-bar">
+                                    <label>HP</label>
+                                    <div class="bar-container">
+                                        <div id="enemyHpBar" class="bar-fill hp-fill"></div>
+                                        <span id="enemyHpText" class="bar-text">150/150</span>
+                                    </div>
+                                </div>
+                                <div class="stat-bar mp-bar">
+                                    <label>MP</label>
+                                    <div class="bar-container">
+                                        <div id="enemyMpBar" class="bar-fill mp-fill"></div>
+                                        <span id="enemyMpText" class="bar-text">30/30</span>
+                                    </div>
+                                </div>
+                                <div class="status-effects" id="enemyStatusEffects"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Battle UI -->
+                <div class="battle-ui">
+                    <!-- Action Menu -->
+                    <div id="actionMenu" class="action-menu">
+                        <button class="action-btn attack-btn" data-action="attack">
+                            <span class="btn-icon">⚔️</span>
+                            <span class="btn-text">Atacar</span>
+                        </button>
+                        <button class="action-btn magic-btn" data-action="magic">
+                            <span class="btn-icon">🔮</span>
+                            <span class="btn-text">Magia</span>
+                        </button>
+                        <button class="action-btn item-btn" data-action="item">
+                            <span class="btn-icon">🧪</span>
+                            <span class="btn-text">Item</span>
+                        </button>
+                        <button class="action-btn defend-btn" data-action="defend">
+                            <span class="btn-icon">🛡️</span>
+                            <span class="btn-text">Defender</span>
+                        </button>
+                    </div>
+
+                    <!-- Sub Menus -->
+                    <div id="magicMenu" class="sub-menu hidden">
+                        <h3>Escolha uma Magia</h3>
+                        <div class="magic-list">
+                            <button class="magic-btn" data-spell="fireball" data-cost="10">
+                                <span class="spell-icon">🔥</span>
+                                <span class="spell-name">Bola de Fogo</span>
+                                <span class="spell-cost">10 MP</span>
+                            </button>
+                            <button class="magic-btn" data-spell="heal" data-cost="8">
+                                <span class="spell-icon">💚</span>
+                                <span class="spell-name">Cura</span>
+                                <span class="spell-cost">8 MP</span>
+                            </button>
+                            <button class="magic-btn" data-spell="lightning" data-cost="15">
+                                <span class="spell-icon">⚡</span>
+                                <span class="spell-name">Raio</span>
+                                <span class="spell-cost">15 MP</span>
+                            </button>
+                        </div>
+                        <button class="back-btn">← Voltar</button>
+                    </div>
+
+                    <!-- Casting Bar -->
+                    <div id="castingBar" class="casting-bar hidden">
+                        <div class="casting-info">
+                            <span id="castingSpell">Conjurando...</span>
+                            <span id="castingTime">3.0s</span>
+                        </div>
+                        <div class="casting-progress">
+                            <div id="castingFill" class="casting-fill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Battle Log -->
+                    <div class="battle-log">
+                        <div id="battleMessages" class="battle-messages"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Damage Numbers -->
+            <div id="damageNumbers" class="damage-numbers"></div>
+
+            <!-- Victory/Defeat Screen -->
+            <div id="battleResult" class="battle-result hidden">
+                <div class="result-content">
+                    <h1 id="resultTitle" class="result-title"></h1>
+                    <div id="resultStats" class="result-stats"></div>
+                    <div class="result-actions">
+                        <button id="continueBtn" class="result-btn">Continuar</button>
+                        <button id="retryBtn" class="result-btn secondary">Tentar Novamente</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bgMusic" loop>
+        <source src="assets/audio/battle-theme.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sfxAttack" preload="auto">
+        <source src="assets/audio/sword-slash.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sfxMagic" preload="auto">
+        <source src="assets/audio/magic-cast.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sfxHit" preload="auto">
+        <source src="assets/audio/hit-impact.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sfxHeal" preload="auto">
+        <source src="assets/audio/heal-sound.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Game Final Fantasy - Demo Completo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'shadow-purple': '#6B46C1',
+                        'shadow-red': '#DC2626',
+                        'shadow-blue': '#2563EB'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #6B46C1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .demo-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #DC2626, #7C3AED, #2563EB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-glow {
+            box-shadow: 0 0 20px rgba(107, 70, 193, 0.3);
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 20px rgba(107, 70, 193, 0.3); }
+            to { box-shadow: 0 0 30px rgba(107, 70, 193, 0.6); }
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Header -->
+    <header class="bg-black/50 backdrop-blur-sm border-b border-purple-500/30 p-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+                    <span class="text-2xl">⚔️</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold gradient-text">Shadow Game Final Fantasy</h1>
+                    <p class="text-sm text-gray-400">Sistema de Demonstração Completo</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="bg-green-600 text-white px-3 py-1 rounded-full text-sm animate-pulse">
+                    🤖 IA Multi-Provider Ativa
+                </div>
+                <div class="bg-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                    🎮 Demo Mode
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto p-6">
+        <!-- System Status -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4 gradient-text">🚀 Status do Sistema</h2>
+            <div id="system-status" class="mb-4">
+                <div class="bg-yellow-600 text-white p-3 rounded-lg">
+                    ⏳ Sistema não inicializado - Clique em "Initialize System" para começar
+                </div>
+            </div>
+            
+            <div class="flex space-x-4">
+                <button 
+                    onclick="initializeSystem()" 
+                    class="demo-button bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-3 rounded-lg font-bold transition-all duration-300 transform hover:scale-105"
+                >
+                    🚀 Initialize System
+                </button>
+                
+                <button 
+                    onclick="demoBattleLauncher.displaySystemStats()" 
+                    class="demo-button bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-700 hover:to-cyan-700 text-white px-6 py-3 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 opacity-50 cursor-not-allowed"
+                    disabled
+                >
+                    📊 System Stats
+                </button>
+            </div>
+        </div>
+
+        <!-- Demo Controls -->
+        <div class="grid lg:grid-cols-3 gap-8 mb-8">
+            <!-- AI Testing -->
+            <div class="bg-gradient-to-br from-blue-900/50 to-cyan-900/50 border border-blue-500/30 p-6 rounded-lg card-glow">
+                <h3 class="text-xl font-bold text-blue-400 mb-4">🧪 Teste de Provedores IA</h3>
+                <p class="text-gray-300 mb-4 text-sm">
+                    Teste todos os provedores de IA: OpenAI, Gemini, DeepSeek e Grok
+                </p>
+                
+                <button 
+                    onclick="demoBattleLauncher.testAIProviders()" 
+                    class="demo-button w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-bold transition-all duration-300 opacity-50 cursor-not-allowed"
+                    disabled
+                >
+                    🔬 Test AI Providers
+                </button>
+                
+                <div id="test-results" class="mt-4">
+                    <div class="text-center text-gray-400 text-sm">
+                        Aguardando inicialização do sistema...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Battle Creation -->
+            <div class="bg-gradient-to-br from-purple-900/50 to-pink-900/50 border border-purple-500/30 p-6 rounded-lg card-glow">
+                <h3 class="text-xl font-bold text-purple-400 mb-4">⚔️ Criação de Batalha</h3>
+                <p class="text-gray-300 mb-4 text-sm">
+                    Crie batalhas demo com inimigos gerados por IA
+                </p>
+                
+                <button 
+                    onclick="demoBattleLauncher.createDemoBattle()" 
+                    class="demo-button w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-bold transition-all duration-300 opacity-50 cursor-not-allowed"
+                    disabled
+                >
+                    🎯 Create Demo Battle
+                </button>
+                
+                <div id="battle-info" class="mt-4">
+                    <div class="text-center text-gray-400 text-sm">
+                        Aguardando inicialização do sistema...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Battle Simulation -->
+            <div class="bg-gradient-to-br from-red-900/50 to-orange-900/50 border border-red-500/30 p-6 rounded-lg card-glow">
+                <h3 class="text-xl font-bold text-red-400 mb-4">🤖 Simulação de Batalha</h3>
+                <p class="text-gray-300 mb-4 text-sm">
+                    Execute simulações completas de combate com IA
+                </p>
+                
+                <button 
+                    onclick="demoBattleLauncher.simulateFullBattle()" 
+                    class="demo-button w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-bold transition-all duration-300 opacity-50 cursor-not-allowed"
+                    disabled
+                >
+                    ⚡ Simulate Battle
+                </button>
+                
+                <div id="simulation-results" class="mt-4">
+                    <div class="text-center text-gray-400 text-sm">
+                        Aguardando criação de batalha...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Statistics -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4 gradient-text">📊 Estatísticas do Sistema</h2>
+            <div id="system-stats">
+                <div class="bg-gradient-to-br from-gray-900/50 to-slate-900/50 border border-gray-500/30 p-6 rounded-lg">
+                    <div class="text-center text-gray-400">
+                        <div class="text-4xl mb-2">📊</div>
+                        <p>Estatísticas serão exibidas após a inicialização do sistema</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Showcase -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-gradient-to-br from-green-900/50 to-emerald-900/50 border border-green-500/30 p-4 rounded-lg">
+                <div class="text-center">
+                    <div class="text-3xl mb-2">🧠</div>
+                    <h4 class="font-bold text-green-400 mb-1">IA Avançada</h4>
+                    <p class="text-xs text-gray-400">4 Provedores Ativos</p>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-br from-purple-900/50 to-violet-900/50 border border-purple-500/30 p-4 rounded-lg">
+                <div class="text-center">
+                    <div class="text-3xl mb-2">⚔️</div>
+                    <h4 class="font-bold text-purple-400 mb-1">Batalhas NFT</h4>
+                    <p class="text-xs text-gray-400">Sistema Completo</p>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-br from-blue-900/50 to-cyan-900/50 border border-blue-500/30 p-4 rounded-lg">
+                <div class="text-center">
+                    <div class="text-3xl mb-2">🎮</div>
+                    <h4 class="font-bold text-blue-400 mb-1">Multiplayer</h4>
+                    <p class="text-xs text-gray-400">PvP + PvE</p>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-br from-yellow-900/50 to-orange-900/50 border border-yellow-500/30 p-4 rounded-lg">
+                <div class="text-center">
+                    <div class="text-3xl mb-2">💰</div>
+                    <h4 class="font-bold text-yellow-400 mb-1">Play2Earn</h4>
+                    <p class="text-xs text-gray-400">Tokens SHADOW</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Info -->
+        <div class="bg-gradient-to-br from-gray-900/50 to-slate-900/50 border border-gray-500/30 p-6 rounded-lg">
+            <h3 class="text-xl font-bold text-gray-300 mb-4">🔧 Informações Técnicas</h3>
+            <div class="grid md:grid-cols-2 gap-6 text-sm">
+                <div>
+                    <h4 class="font-bold text-blue-400 mb-2">Provedores de IA:</h4>
+                    <ul class="space-y-1 text-gray-300">
+                        <li>• OpenAI GPT-4 (Prioridade 1)</li>
+                        <li>• Google Gemini Pro (Prioridade 2)</li>
+                        <li>• DeepSeek AI (Prioridade 3)</li>
+                        <li>• xAI Grok (Prioridade 4)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-purple-400 mb-2">Funcionalidades:</h4>
+                    <ul class="space-y-1 text-gray-300">
+                        <li>• Sistema de Fallback Inteligente</li>
+                        <li>• Cache de Respostas</li>
+                        <li>• Simulação de Batalhas</li>
+                        <li>• Estatísticas em Tempo Real</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black/50 backdrop-blur-sm border-t border-purple-500/30 p-6 mt-12">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-gray-400">
+                Shadow Game Final Fantasy - Sistema de Demonstração Completo
+            </p>
+            <p class="text-sm text-gray-500 mt-2">
+                Powered by OpenAI, Gemini, DeepSeek & Grok AI
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="AIProviderManager.js"></script>
+    <script src="demo-battle-launcher.js"></script>
+    
+    <script>
+        // Global initialization function
+        async function initializeSystem() {
+            console.log("🚀 Starting system initialization...");
+            
+            try {
+                const success = await demoBattleLauncher.initialize();
+                
+                if (success) {
+                    console.log("✅ System initialized successfully!");
+                } else {
+                    console.error("❌ System initialization failed");
+                }
+            } catch (error) {
+                console.error("❌ Initialization error:", error);
+            }
+        }
+        
+        // Auto-load when page is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("🎮 Shadow Game Demo Page Loaded");
+            console.log("📋 Available commands:");
+            console.log("  - initializeSystem()");
+            console.log("  - demoBattleLauncher.testAIProviders()");
+            console.log("  - demoBattleLauncher.createDemoBattle()");
+            console.log("  - demoBattleLauncher.simulateFullBattle()");
+        });
+    </script>
+</body>
+</html>

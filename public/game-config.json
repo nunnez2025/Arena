@@ -1,0 +1,180 @@
+{
+  "gameTitle": "Game das Sombras - Shadow Arena",
+  "version": "1.0.0",
+  "directories": {
+    "paginaInicial": {
+      "name": "P‑gina‑inicial‑game",
+      "description": "Landing page e interface principal do jogo",
+      "assets": ["hero-images", "ui-elements", "logos"]
+    },
+    "cosmicAdventure": {
+      "name": "cosmic‑adventure‑forge",
+      "description": "Módulo de aventura cósmica e exploração espacial",
+      "assets": ["space-backgrounds", "alien-characters", "cosmic-effects"]
+    },
+    "shadowForge": {
+      "name": "shadow‑forge‑creations",
+      "description": "Sistema de criação e forja de itens NFT",
+      "assets": ["forge-animations", "item-sprites", "crafting-materials"]
+    },
+    "shadowVision": {
+      "name": "shadow‑cloned‑vision",
+      "description": "Sistema de visão e detecção de sombras",
+      "assets": ["shadow-effects", "vision-overlays", "detection-ui"]
+    }
+  },
+  "gameSettings": {
+    "resolution": {
+      "width": 1920,
+      "height": 1080,
+      "responsive": true
+    },
+    "frameRate": 60,
+    "audioEnabled": true,
+    "particleEffects": true,
+    "animationQuality": "high"
+  },
+  "battleSystem": {
+    "turnBased": true,
+    "maxPartySize": 4,
+    "maxEnemies": 6,
+    "animationSpeed": 1.0,
+    "damageFormula": "base * (1 + (attack - defense) / 100)"
+  },
+  "nftIntegration": {
+    "blockchain": "Ethereum",
+    "tokenStandard": "ERC-721",
+    "marketplaceEnabled": true,
+    "stakingEnabled": true,
+    "tokenSymbol": "SHADOW"
+  },
+  "characters": {
+    "shadowWarrior": {
+      "name": "Shadow Warrior",
+      "baseStats": {
+        "hp": 100,
+        "mp": 50,
+        "attack": 25,
+        "defense": 20,
+        "speed": 15
+      },
+      "skills": ["shadowStrike", "voidBlast"],
+      "animations": ["idle", "walk", "attack", "cast", "hurt", "death"]
+    },
+    "cosmicMage": {
+      "name": "Cosmic Mage",
+      "baseStats": {
+        "hp": 80,
+        "mp": 100,
+        "attack": 15,
+        "defense": 12,
+        "speed": 18
+      },
+      "skills": ["cosmicHeal", "starBurst"],
+      "animations": ["idle", "walk", "cast", "heal", "hurt", "death"]
+    }
+  },
+  "enemies": {
+    "shadowBeast": {
+      "name": "Shadow Beast",
+      "baseStats": {
+        "hp": 80,
+        "mp": 30,
+        "attack": 20,
+        "defense": 15,
+        "speed": 12
+      },
+      "skills": ["shadowClaw", "darkRoar"],
+      "rewards": {
+        "experience": 150,
+        "shadowTokens": 50,
+        "dropChance": 0.3
+      }
+    },
+    "voidGuardian": {
+      "name": "Void Guardian",
+      "baseStats": {
+        "hp": 150,
+        "mp": 50,
+        "attack": 30,
+        "defense": 25,
+        "speed": 8
+      },
+      "skills": ["voidSlam", "darkShield"],
+      "rewards": {
+        "experience": 300,
+        "shadowTokens": 100,
+        "dropChance": 0.5
+      }
+    }
+  },
+  "items": {
+    "weapons": [
+      {
+        "id": "shadow-blade",
+        "name": "Shadow Blade",
+        "rarity": "Epic",
+        "stats": { "attack": 45, "speed": 5 },
+        "nftEnabled": true
+      },
+      {
+        "id": "cosmic-staff",
+        "name": "Cosmic Staff",
+        "rarity": "Legendary",
+        "stats": { "attack": 35, "mp": 25 },
+        "nftEnabled": true
+      }
+    ],
+    "armor": [
+      {
+        "id": "void-armor",
+        "name": "Void Armor",
+        "rarity": "Rare",
+        "stats": { "defense": 30, "hp": 20 },
+        "nftEnabled": true
+      }
+    ],
+    "consumables": [
+      {
+        "id": "health-potion",
+        "name": "Health Potion",
+        "effect": "heal",
+        "value": 50,
+        "nftEnabled": false
+      },
+      {
+        "id": "mana-potion",
+        "name": "Mana Potion",
+        "effect": "restoreMp",
+        "value": 30,
+        "nftEnabled": false
+      }
+    ]
+  },
+  "animations": {
+    "battleTransitions": {
+      "fadeIn": { "duration": 1000, "easing": "ease-in-out" },
+      "slideAttack": { "duration": 500, "easing": "ease-out" },
+      "damageShake": { "duration": 200, "intensity": 5 },
+      "victoryPose": { "duration": 2000, "easing": "bounce" }
+    },
+    "uiAnimations": {
+      "buttonHover": { "scale": 1.05, "duration": 200 },
+      "menuSlide": { "duration": 300, "easing": "ease-out" },
+      "healthBarUpdate": { "duration": 500, "easing": "ease-in-out" }
+    }
+  },
+  "audio": {
+    "music": {
+      "mainTheme": "shadow-arena-theme.mp3",
+      "battleTheme": "epic-battle.mp3",
+      "victoryTheme": "victory-fanfare.mp3"
+    },
+    "sfx": {
+      "swordSlash": "sword-slash.wav",
+      "magicCast": "magic-cast.wav",
+      "enemyHit": "enemy-hit.wav",
+      "buttonClick": "button-click.wav"
+    }
+  }
+}
