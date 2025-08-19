@@ -400,7 +400,8 @@
       this.setupTurnQueue()
       this.updateTurnDisplay()
       this.updateUI()
-      // No blocking loop; rely on player/AI flow
+      // Start turn sequence
+      await this.nextTurn()
     }
 
     setupTurnQueue() {
